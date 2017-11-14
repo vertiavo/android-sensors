@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.verti.sensors.PressureActivity">
+    tools:context="com.verti.sensors.ProximityActivity">
 
     <View
         android:id="@+id/shapeView"
-        android:layout_width="300dp"
-        android:layout_height="150dp"
+        android:layout_width="@dimen/shapeWidth"
+        android:layout_height="@dimen/shapeHeight"
         android:background="@drawable/shape"/>
 
     <TextView
@@ -17,6 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/shapeView"
-        android:text="Sample string"/>
+        android:text="@string/sample_string"/>
 
 </RelativeLayout>

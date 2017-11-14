@@ -5,6 +5,9 @@
     <uses-feature
         android:name="android.hardware.sensor.pressure"
         android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.proximity"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PressureActivity" android:parentActivityName=".MainActivity" />
+        <activity android:name=".ProximityActivity" android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

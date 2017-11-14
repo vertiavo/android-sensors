@@ -42,7 +42,7 @@ class MainActivity : Activity(), SensorEventListener {
             Log.d(error, "Sensor not found.")
         }
 
-        nextButton.setOnClickListener { startActivity(Intent(this, PressureActivity::class.java)) }
+        nextButton.setOnClickListener { startActivity(Intent(this, ProximityActivity::class.java)) }
     }
 
     override fun onResume() {
