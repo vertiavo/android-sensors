@@ -6,17 +6,17 @@
     android:layout_height="match_parent"
     tools:context="com.verti.sensors.PressureActivity">
 
+    <View
+        android:id="@+id/shapeView"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:background="@drawable/shape"/>
+
     <TextView
         android:id="@+id/shapeTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/shapeView"
         android:text="Sample string"/>
-
-    <View
-        android:id="@+id/shapeView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/shapeTitle"
-        android:background="@drawable/shape" />
 
 </RelativeLayout>

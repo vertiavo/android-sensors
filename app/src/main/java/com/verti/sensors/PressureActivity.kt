@@ -9,6 +9,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 
 import kotlinx.android.synthetic.main.activity_pressure.*
 
@@ -21,6 +22,8 @@ class PressureActivity : Activity(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private lateinit var proximitySensor: Sensor
     private val sensorSensitivity = 4
+    private var closeUpCouter = 0
+    private var alreadyCloseUp = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,13 +56,31 @@ class PressureActivity : Activity(), SensorEventListener {
 
         if (p0 != null && p0.sensor.type == Sensor.TYPE_PROXIMITY) {
             if (p0.values[0] >= -sensorSensitivity && p0.values[0] <= sensorSensitivity) {
-                shapeView.setBackgroundColor(Color.RED)
                 Log.d(proximity, "near")
+                shapeView.setBackgroundColor(Color.RED)
+                shapeTitle.textSize = 14.0f
+                if (!alreadyCloseUp) {
+                    alreadyCloseUp = true
+                    closeUpCouter++
+                    checkCloseUps()
+                }
             } else {
-                shapeView.setBackgroundColor(Color.GREEN)
-
                 Log.d(proximity, "far")
+                shapeView.setBackgroundColor(Color.GREEN)
+                shapeTitle.textSize = 22.0f
+                if (alreadyCloseUp) {
+                    alreadyCloseUp = false
+                }
             }
+        }
+    }
+
+    fun checkCloseUps() {
+        if (closeUpCouter == 2) {
+            Toast.makeText(applicationContext, "Application may be closed", Toast.LENGTH_SHORT).show()
+        } else if (closeUpCouter > 2) {
+            this.finish()
+            System.exit(0)
         }
     }
 }
