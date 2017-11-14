@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Sensors</string>
+    <plurals name="sensors_summary_info">
+        <item quantity="one">You have only one sensor :(</item>
+        <item quantity="other">You have %d sensors. Great!</item>
+    </plurals>
+</resources>
