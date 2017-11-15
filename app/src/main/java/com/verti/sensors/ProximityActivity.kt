@@ -3,17 +3,17 @@ package com.verti.sensors
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Rect
+import android.graphics.Point
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
-import android.view.WindowManager
 import android.widget.Toast
 
 import kotlinx.android.synthetic.main.activity_proximity.*
+
 
 class ProximityActivity : Activity(), SensorEventListener {
 
@@ -59,7 +59,6 @@ class ProximityActivity : Activity(), SensorEventListener {
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
         Log.d(accuracy, "Accuracy changed!")
-
     }
 
     override fun onSensorChanged(p0: SensorEvent?) {
@@ -68,7 +67,7 @@ class ProximityActivity : Activity(), SensorEventListener {
             if (p0.values[0] >= -sensorSensitivity && p0.values[0] <= sensorSensitivity) {
                 Log.d(proximity, "near")
                 shapeView.setBackgroundColor(Color.RED)
-                shapeTitle.textSize = 14.0f
+                shapeTitle.textSize = resources.getDimension(R.dimen.smallFont)
                 if (!alreadyCloseUp) {
                     alreadyCloseUp = true
                     closeUpCounter++
@@ -77,7 +76,7 @@ class ProximityActivity : Activity(), SensorEventListener {
             } else {
                 Log.d(proximity, "far")
                 shapeView.setBackgroundColor(Color.GREEN)
-                shapeTitle.textSize = 22.0f
+                shapeTitle.textSize = resources.getDimension(R.dimen.largeFont)
                 if (alreadyCloseUp) {
                     alreadyCloseUp = false
                 }
@@ -85,15 +84,30 @@ class ProximityActivity : Activity(), SensorEventListener {
         }
 
         if (p0 != null && p0.sensor.type == Sensor.TYPE_ACCELEROMETER) {
-            val windowRect = Rect()
-            shapeView.getWindowVisibleDisplayFrame(windowRect)
-            val windowHeight = windowRect.bottom - windowRect.top
-            val windowWidth = windowRect.right - windowRect.left
+            val display = windowManager.defaultDisplay
+            val windowSize = Point()
+            display.getSize(windowSize)
 
-            if (shapeView.translationX >= 0 && shapeView.translationX <= windowWidth) {
+            val shapeHeight = resources.getDimension(R.dimen.shapeHeight)
+            val shapeWidth = resources.getDimension(R.dimen.shapeWidth)
+
+            // Device rotated to the left
+            if (p0.values[0] > 0 && shapeView.x > 0) {
                 shapeView.translationX -= p0.values[0]
             }
-            if (shapeView.translationY >= 0 && shapeView.translationY <= windowHeight) {
+
+            // Device rotated to the right
+            if (p0.values[0] < 0 && (shapeView.x + shapeWidth) < windowSize.x) {
+                shapeView.translationX -= p0.values[0]
+            }
+
+            // Device rotated forward
+            if (p0.values[1] < 0 && shapeView.y > 0) {
+                shapeView.translationY += p0.values[1]
+            }
+
+            // Device rotated backward
+            if (p0.values[1] > 0 && (shapeView.y + shapeHeight) < windowSize.y) {
                 shapeView.translationY += p0.values[1]
             }
         }
